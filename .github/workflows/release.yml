@@ -1,0 +1,30 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build BlueforceRGB.exe
+        shell: powershell
+        run: .\build.ps1
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: powershell
+        run: |
+          $tag = $env:GITHUB_REF_NAME
+          gh release create $tag BlueforceRGB.exe `
+            --title "Blueforce RGB Studio $tag" `
+            --notes "Blueforce (ZXWMicroChip 5566:0008) klavyeler için 23 doğrulanmış 60 FPS donanım modu ve modern koyu arayüz. İndirip doğrudan BlueforceRGB.exe dosyasını çalıştırabilirsiniz."

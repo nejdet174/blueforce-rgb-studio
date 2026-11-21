@@ -1,6 +1,5 @@
 # Build outputs
 *.exe
-!BlueforceRGB.exe
 *.dll
 *.pdb
 *.obj
